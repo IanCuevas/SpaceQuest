@@ -17,11 +17,14 @@ MonoBehaviour:
   mapName: MainArea
   entryPoints:
   - entryPointID: 0
-    cell: {x: -10, y: 0, z: 0}
-    targetState: 0
+    cell: {x: 6, y: -1, z: 0}
+    targetState: 2
   - entryPointID: 1
-    cell: {x: -20, y: 0, z: 0}
-    targetState: 0
+    cell: {x: -8, y: -1, z: 0}
+    targetState: 3
   - entryPointID: 2
-    cell: {x: -15, y: 0, z: 0}
+    cell: {x: -1, y: -6, z: 0}
     targetState: 0
+  - entryPointID: 3
+    cell: {x: -1, y: 4, z: 0}
+    targetState: 1

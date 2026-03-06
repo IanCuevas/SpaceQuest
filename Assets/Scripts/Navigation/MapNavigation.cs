@@ -9,6 +9,7 @@ public class MapNavigation : MonoBehaviour
     [SerializeField] private MapLibrary mapLibrary;
     [SerializeField] private Transform player;
     [SerializeField] private Transform mapParent;
+    [SerializeField] private int startingMapID = 0;
 
     private Dictionary<int, MapData> mapDictionary = new Dictionary<int, MapData>();
     public static MapNavigation Instance;
@@ -25,6 +26,16 @@ public class MapNavigation : MonoBehaviour
     private void Start()
     {
         InitializeMapLibrary();
+        SpawnStartingMap(startingMapID);
+    }
+
+    private void SpawnStartingMap(int mapID)
+    {
+        foreach (Transform child in mapParent)
+            Destroy(child.gameObject);
+
+        currentMap = Instantiate(mapDictionary[mapID].prefab, mapParent);
+        StartCoroutine(InitMap(mapID));
     }
 
     public void InitializeMapLibrary()
@@ -37,15 +48,21 @@ public class MapNavigation : MonoBehaviour
 
     public void GoToMap(int mapID, int entryPointID)
     {
-        GameStateManager.Instance.SaveGameState();
+        GameStateManager.Instance.SaveCurrentMapState();
+
+        EnemySpawner oldSpawner = currentMap.GetComponentInChildren<EnemySpawner>();
+        if (oldSpawner != null)
+        {
+            oldSpawner.ClearEnemies();
+        }
         Destroy(currentMap);
-        currentMap.GetComponentInChildren<EnemySpawner>().ClearEnemies();
+
         currentMap = Instantiate(mapDictionary[mapID].prefab, mapParent);
 
         Grid g = currentMap.GetComponent<Grid>();
-
         Vector3 newPosition = g.GetCellCenterWorld(mapDictionary[mapID].entryPoints[entryPointID].cell);
         player.position = newPosition;
+
         StartCoroutine(InitMap(mapID));
         OnNavigate?.Invoke();
     }

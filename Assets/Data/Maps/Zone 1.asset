@@ -17,5 +17,5 @@ MonoBehaviour:
   mapName: Zone 1
   entryPoints:
   - entryPointID: 1
-    cell: {x: -20, y: 0, z: 0}
+    cell: {x: -8, y: -1, z: 0}
     targetState: 7

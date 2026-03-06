@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f716dcf365d518d46ac7a13ac083bb5b, type: 3}
   m_Name: Zone 3
   m_EditorClassIdentifier: Assembly-CSharp::MapSO
-  prefab: {fileID: 0}
+  prefab: {fileID: 8682590559788957862, guid: b5256ce426fbade40b22f8952ca46d06, type: 3}
   mapID: 3
-  mapName: 
-  entryPoints: []
+  mapName: Zone 3
+  entryPoints:
+  - entryPointID: 0
+    cell: {x: -1, y: 4, z: 0}
+    targetState: 1

@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     {
         foreach (Enemy e in activeEnemies)
         {
-            Destroy(e.gameObject);
+            if (e != null) Destroy(e.gameObject);
         }
         activeEnemies.Clear();
     }

@@ -9,6 +9,5 @@ public class MeleeEnemy : Enemy
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
     }
 }

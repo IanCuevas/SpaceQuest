@@ -23,7 +23,6 @@ public class RangedEnemy : Enemy
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
     }
 
 

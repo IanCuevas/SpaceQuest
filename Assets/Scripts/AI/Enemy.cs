@@ -74,6 +74,16 @@ public abstract class Enemy : MonoBehaviour
     public void TakeDamage(int dmg_)
     {
         HP -= dmg_;
+        if (HP <= 0) HandleDeath();
+    }
+
+    private void HandleDeath()
+    {
+        EnemySpawner spawner = GetComponentInParent<EnemySpawner>();
+        spawner?.activeEnemies.Remove(this);
+
+        Die();
+        Destroy(gameObject);
     }
     public void Pursue()
     {

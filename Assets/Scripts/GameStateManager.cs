@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,75 +5,156 @@ using UnityEngine;
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance;
-    //public List<MapState> mapStates = new List<MapState>();
+
     public GameState gameState;
     public Transform mapParent;
+
     private EnemySpawner spawner;
-    private int currentMapID;
     private MapState currentMapState;
+
+    private readonly Dictionary<int, MapState> mapStateDictionary = new Dictionary<int, MapState>();
 
     private void Awake()
     {
         Instance = this;
     }
+
     private void Start()
     {
-        foreach (MapState mapState in gameState.mapStates)
+        SaveData save = SaveManager.Load();
+
+        if (save != null)
         {
-            mapState.InitializeDictionary();
+            if (PlayerStats.Instance != null)
+                PlayerStats.Instance.ReadFromSaveData(save);
+
+            BuildMapStatesFromSave(save);
+        }
+        else
+        {
+            BuildMapStatesFromDefaults();
         }
 
         InitializeMap(0);
     }
-    public void InitializeMap(int mapID_)
-    {
 
+    private void BuildMapStatesFromDefaults()
+    {
+        mapStateDictionary.Clear();
         foreach (MapState mapState in gameState.mapStates)
         {
-            if (mapState.mapID == mapID_)
-            {
-                currentMapState = mapState;
-                BeginEnemySpawn(currentMapState);
-                break;
-            }
+            mapState.InitializeDictionary();
+            mapStateDictionary[mapState.mapID] = mapState;
         }
     }
 
-    public void BeginEnemySpawn(MapState map)
+    private void BuildMapStatesFromSave(SaveData save)
+    {
+        BuildMapStatesFromDefaults();
+
+        foreach (MapSaveData savedMap in save.mapStates)
+        {
+            if (!mapStateDictionary.TryGetValue(savedMap.mapID, out MapState state))
+                continue;
+
+            foreach (EnemySaveData savedEnemy in savedMap.enemyStates)
+            {
+                if (state.enemyDictionary.TryGetValue(savedEnemy.enemyID, out EnemyState enemyState))
+                    enemyState.currentHP = savedEnemy.currentHP;
+            }
+
+            state.collectedTreasureIDs = new HashSet<int>(savedMap.collectedTreasureIDs);
+        }
+    }
+
+    public void InitializeMap(int mapID)
+    {
+        if (!mapStateDictionary.TryGetValue(mapID, out MapState state))
+        {
+            Debug.LogWarning($"[GameStateManager] No MapState found for mapID {mapID}");
+            return;
+        }
+
+        currentMapState = state;
+        BeginEnemySpawn(currentMapState);
+        HideCollectedTreasures(currentMapState);
+    }
+
+    private void BeginEnemySpawn(MapState map)
     {
         spawner = mapParent.GetComponentInChildren<EnemySpawner>();
+        if (spawner == null) return;
+
         foreach (EnemyState enemy in map.enemyStates)
         {
-
-            if (enemy.currentHP > 0) spawner.Spawn(enemy.enemyID, enemy.currentHP);
+            if (enemy.currentHP > 0)
+                spawner.Spawn(enemy.enemyID, enemy.currentHP);
         }
     }
 
-    public void ResetEnemies()
+    private void HideCollectedTreasures(MapState map)
     {
-        foreach (MapState m in gameState.mapStates)
+        Treasure[] treasures = mapParent.GetComponentsInChildren<Treasure>();
+        foreach (Treasure t in treasures)
+        {
+            if (map.collectedTreasureIDs.Contains(t.treasureID))
+                t.gameObject.SetActive(false);
+        }
+    }
+
+    public void SaveCurrentMapState()
+    {
+        if (mapParent != null)
+            spawner = mapParent.GetComponentInChildren<EnemySpawner>();
+
+        if (spawner == null || currentMapState == null) return;
+
+        foreach (Enemy enemy in spawner.activeEnemies)
+        {
+            if (enemy == null) continue;
+
+            if (currentMapState.enemyDictionary.TryGetValue(enemy.enemyID, out EnemyState state))
+                state.currentHP = enemy.HP;
+        }
+    }
+
+    public void RegisterTreasureCollected(int mapID, int treasureID)
+    {
+        if (mapStateDictionary.TryGetValue(mapID, out MapState state))
+            state.collectedTreasureIDs.Add(treasureID);
+    }
+
+    public void ResetAllEnemies()
+    {
+        foreach (MapState m in mapStateDictionary.Values)
         {
             foreach (EnemyState e in m.enemyStates)
-            {
                 e.currentHP = e.maxHP;
-            }
         }
     }
 
-    [ContextMenu("Try Save")]
-    public void SaveGameState()
+    [ContextMenu("Save Game")]
+    public void SaveToDisk()
     {
-        if (spawner != null)
-        {
-            List<Enemy> enemies = spawner.activeEnemies;
-            foreach (Enemy enemy in enemies)
-            {
-                currentMapState.enemyDictionary[enemy.enemyID].currentHP = enemy.HP;
-                Debug.Log(currentMapState.enemyDictionary[enemy.enemyID].currentHP);
+        SaveCurrentMapState();
 
-            }
+        SaveData data = new SaveData();
+
+        if (PlayerStats.Instance != null)
+            PlayerStats.Instance.WriteToSaveData(data);
+
+        foreach (MapState map in mapStateDictionary.Values)
+        {
+            MapSaveData mapSave = new MapSaveData { mapID = map.mapID };
+
+            foreach (EnemyState e in map.enemyStates)
+                mapSave.enemyStates.Add(new EnemySaveData { enemyID = e.enemyID, currentHP = e.currentHP });
+
+            mapSave.collectedTreasureIDs.AddRange(map.collectedTreasureIDs);
+            data.mapStates.Add(mapSave);
         }
 
+        SaveManager.Save(data);
     }
 }
 
@@ -83,15 +163,15 @@ public class MapState
 {
     public int mapID;
     public List<EnemyState> enemyStates;
+
     [NonSerialized] public Dictionary<int, EnemyState> enemyDictionary;
+    [NonSerialized] public HashSet<int> collectedTreasureIDs = new HashSet<int>();
 
     public void InitializeDictionary()
     {
         enemyDictionary = new Dictionary<int, EnemyState>();
         foreach (EnemyState enemy in enemyStates)
-        {
-            enemyDictionary.Add(enemy.enemyID, enemy);
-        }
+            enemyDictionary[enemy.enemyID] = enemy;
     }
 }
 
