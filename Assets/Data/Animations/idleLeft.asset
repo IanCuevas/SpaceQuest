@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974a10e20030acc4fa17bda2503189c4, type: 3}
+  m_Name: idleLeft
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationData
+  animationName: Walk Up
+  frames:
+  - {fileID: 21300000, guid: ce7b3baa5bac4c5f908f345eea062c67, type: 3}
+  - {fileID: 21300000, guid: 4a21a6f8edc44eb6b264430b7b80dda6, type: 3}
+  - {fileID: 21300000, guid: 4bedb514a71e49f2acb9951559f130b6, type: 3}
+  - {fileID: 21300000, guid: 03cdf5a51fc048d4a38c2cf1ce7cb434, type: 3}
+  - {fileID: 21300000, guid: ceeea194e7cf4b12be558cdd76081c1f, type: 3}
+  - {fileID: 21300000, guid: 2c0cb3e02ae34f18801468e4835c3b5e, type: 3}
+  - {fileID: 21300000, guid: ee37bcd07ab542df8bbb767e0e376130, type: 3}
+  - {fileID: 21300000, guid: dbbcd8679a464b5bb6c4570e31d8d264, type: 3}
+  - {fileID: 21300000, guid: 1ea1d5a8e9964d0da93176fb4c752392, type: 3}
+  - {fileID: 21300000, guid: 068a63669a0c42afa363c0d2e15c16e4, type: 3}
+  - {fileID: 21300000, guid: 5cb2731380d14120a4da520158a43128, type: 3}
+  - {fileID: 21300000, guid: f8f0d06f10794acaa8d7253a5b20c9d5, type: 3}
+  - {fileID: 21300000, guid: b78f02f27eae4ec582c8852238d09057, type: 3}
+  - {fileID: 21300000, guid: 31934f6c35f240578b5a7010adc2db1e, type: 3}
+  - {fileID: 21300000, guid: 7f38305b88224c02b395f0098554db26, type: 3}
+  - {fileID: 21300000, guid: 21431ace92cc43a79e4ddb8961187bf9, type: 3}
+  - {fileID: 21300000, guid: cf8740f5b56d4d06b579643a21afee57, type: 3}
+  - {fileID: 21300000, guid: 0b91e520ee394f00832315984b2e0079, type: 3}
+  - {fileID: 21300000, guid: debca5247f7a4c23a2cc59ef8b7a60aa, type: 3}
+  - {fileID: 21300000, guid: 1899291630fe48efa9e4f408997fa203, type: 3}
+  - {fileID: 21300000, guid: 8f27987d18e542caa29f72b859a3a0d6, type: 3}
+  frameDelay: 0.1
+  loop: 1

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974a10e20030acc4fa17bda2503189c4, type: 3}
+  m_Name: walkDown
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationData
+  animationName: Walk Up
+  frames:
+  - {fileID: 21300000, guid: cf85cd98ee5a4c7ca58528830e694ba1, type: 3}
+  - {fileID: 21300000, guid: 1cf83b0d96804250999e101b0461aa8f, type: 3}
+  - {fileID: 21300000, guid: c5ce835e4c774e8b8f810244d9ac8498, type: 3}
+  - {fileID: 21300000, guid: cfa60840c06e44a281857e74876e0a67, type: 3}
+  - {fileID: 21300000, guid: 97c14b470ea848629e842b74794e4333, type: 3}
+  - {fileID: 21300000, guid: caee866ab6534391a39b62e50efd7910, type: 3}
+  - {fileID: 21300000, guid: 7c6ed825b4db467b82a5b89fd00ea321, type: 3}
+  - {fileID: 21300000, guid: b86e8f868d184620b2b1d2a4acb78fd6, type: 3}
+  - {fileID: 21300000, guid: c39753cd054047f49dfef042a907768a, type: 3}
+  - {fileID: 21300000, guid: 564a1c34861540a2a3a10fe01805eccd, type: 3}
+  - {fileID: 21300000, guid: 50f09758c3f24ca99ac68a0ec68babdd, type: 3}
+  - {fileID: 21300000, guid: 56bc5c707dcd4d75a6e17675fa3b8bf5, type: 3}
+  - {fileID: 21300000, guid: 1048ce29baca405595107df551d06dd0, type: 3}
+  - {fileID: 21300000, guid: 53137fb82fba43d1b803c173ab445ded, type: 3}
+  frameDelay: 0.1
+  loop: 1
